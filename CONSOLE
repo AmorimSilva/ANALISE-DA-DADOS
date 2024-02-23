@@ -1,0 +1,175 @@
+CONSOLE
+> (MEDIA.EVAPO=mean(Dados$Evapotranspiração))
+[1] 211.25
+> (DESV.EVAPO=sd(Dados$Evapotranspiração))
+[1] 61.35785
+> (MEDIA.DIASPREC=mean(Dados$`Dias Prec`))
+[1] 7.5
+> (DESV.DIASPREC=sd(Dados$`Dias Prec`))
+[1] 3.207135
+> (MEDIA.PRECI=mean(Dados$Precipitação))
+[1] 73.625
+> (DESV.PRECI=sd(Dados$Precipitação))
+[1] 34.81353
+> (MEDIA.TEMP=mean(Dados$Temperatura))
+[1] 26.875
+> (DESV.TEMP=sd(Dados$Temperatura))
+[1] 0.834523
+> (MEDIA.UMI=mean(Dados$Umidade))
+[1] 69.25
+> (DESV.UMI=sd(Dados$Umidade))
+[1] 7.611082
+> table(groups.4) 
+groups.4
+1 2 3 4 
+2 2 3 1
+> head(dd)
+     Evapotranspiração  Dias Prec Precipitação Temperatura     Umidade cluster
+[1,]        -0.7048813  2.0267311    1.9065861  -1.0485032  1.41241413       1
+[2,]        -0.1181593 -0.4677072   -0.5349931  -1.0485032 -0.55839629       2
+[3,]         0.6315410 -0.4677072   -0.5924420   1.3480756 -1.08394573       3
+[4,]         1.4790284 -0.4677072   -0.3913708   0.1497862  0.22992788       3
+[5,]        -0.1996485 -0.4677072    0.1543940   0.1497862  0.09854052       2
+[6,]        -1.0145401 -0.7795120   -1.0233089   1.3480756 -0.03284684       4
+> cor(df)
+                  Evapotranspiração  Dias Prec Precipitação Temperatura    Umidade
+Evapotranspiração         1.0000000 -0.4791357   -0.4608735   0.2852705 -0.6263388
+Dias Prec                -0.4791357  1.0000000    0.9640951  -0.6672006  0.7900819
+Precipitação             -0.4608735  0.9640951    1.0000000  -0.6951654  0.8236823
+Temperatura               0.2852705 -0.6672006   -0.6951654   1.0000000 -0.5566631
+Umidade                  -0.6263388  0.7900819    0.8236823  -0.5566631  1.0000000
+>  min(d)  #menor distância da matriz
+[1] 1.33302
+> print(km.res)  
+K-means clustering with 2 clusters of sizes 6, 2
+
+Cluster means:
+  Evapotranspiração  Dias Prec Precipitação Temperatura    Umidade
+1         0.3218822 -0.5196746   -0.4966938   0.3495011 -0.4489068
+2        -0.9656466  1.5590239    1.4900814  -1.0485032  1.3467205
+
+Clustering vector:
+[1] 2 1 1 1 1 1 1 2
+
+Within cluster sum of squares by cluster:
+[1] 11.4138885  0.9290807
+ (between_SS / total_SS =  64.7 %)
+
+Available components:
+
+[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+[6] "betweenss"    "size"         "iter"         "ifault"      
+
+> aggregate(df,by=list(cluster=km.res$cluster),mean)
+  cluster Evapotranspiração  Dias Prec Precipitação Temperatura    Umidade
+1       1         0.3218822 -0.5196746   -0.4966938   0.3495011 -0.4489068
+2       2        -0.9656466  1.5590239    1.4900814  -1.0485032  1.3467205
+> print(fit) # resultados básicos
+
+ Principal inertias (eigenvalues):
+           1   2  
+Value      1   1  
+Percentage 50% 50%
+
+
+ Rows:
+              136      149       168       199       204      250       282
+Mass     0.125000 0.125000  0.125000  0.125000  0.125000 0.125000  0.125000
+ChiDist  1.290994 1.732051  1.290994  1.290994  1.290994 1.732051  1.290994
+Inertia  0.208333 0.375000  0.208333  0.208333  0.208333 0.375000  0.208333
+Dim. 1   0.000000 1.549193  0.000000 -1.032796  0.000000 1.549193 -1.032796
+Dim. 2  -1.290994 0.774597 -1.290994  0.774597 -1.290994 0.774597  0.774597
+              302
+Mass     0.125000
+ChiDist  1.290994
+Inertia  0.208333
+Dim. 1  -1.032796
+Dim. 2   0.774597
+
+
+ Columns:
+               26        27       28
+Mass     0.375000  0.375000 0.250000
+ChiDist  1.290994  1.290994 1.732051
+Inertia  0.625000  0.625000 0.750000
+Dim. 1   0.000000 -1.032796 1.549193
+Dim. 2  -1.290994  0.774597 0.774597
+> summary(fit) # valores 
+
+Principal inertias (eigenvalues):
+
+ dim    value      %   cum%   scree plot               
+ 1      10000000  50.0  50.0  ************             
+ 2      10000000  50.0 100.0  ************             
+        -------- -----                                 
+ Total: 20000000 100.0                                 
+
+
+Rows:
+    name   mass  qlt  inr     k=1 cor ctr     k=2  cor ctr  
+1 |  136 |  125 1000  104 |     0   0   0 | -1291 1000 208 |
+2 |  149 |  125 1000  187 |  1549 800 300 |   775  200  75 |
+3 |  168 |  125 1000  104 |     0   0   0 | -1291 1000 208 |
+4 |  199 |  125 1000  104 | -1033 640 133 |   775  360  75 |
+5 |  204 |  125 1000  104 |     0   0   0 | -1291 1000 208 |
+6 |  250 |  125 1000  187 |  1549 800 300 |   775  200  75 |
+7 |  282 |  125 1000  104 | -1033 640 133 |   775  360  75 |
+8 |  302 |  125 1000  104 | -1033 640 133 |   775  360  75 |
+
+Columns:
+    name   mass  qlt  inr     k=1 cor ctr     k=2  cor ctr  
+1 |   26 |  375 1000  313 |     0   0   0 | -1291 1000 625 |
+2 |   27 |  375 1000  313 | -1033 640 400 |   775  360 225 |
+3 |   28 |  250 1000  375 |  1549 800 600 |   775  200 150 |
+> CA(Dados[2:6], ncp = 5, graph = TRUE)
+**Results of the Correspondence Analysis (CA)**
+The row variable has  8  categories; the column variable has 5 categories
+The chi square of independence between the two variables is equal to 195.603 (p-value =  4.642415e-27 ).
+*The results are available in the following objects:
+
+   name              description                   
+1  "$eig"            "eigenvalues"                 
+2  "$col"            "results for the columns"     
+3  "$col$coord"      "coord. for the columns"      
+4  "$col$cos2"       "cos2 for the columns"        
+5  "$col$contrib"    "contributions of the columns"
+6  "$row"            "results for the rows"        
+7  "$row$coord"      "coord. for the rows"         
+8  "$row$cos2"       "cos2 for the rows"           
+9  "$row$contrib"    "contributions of the rows"   
+10 "$call"           "summary called parameters"   
+11 "$call$marge.col" "weights of the columns"      
+12 "$call$marge.row" "weights of the rows" 
+> eig.val
+        eigenvalue variance.percent cumulative.variance.percent
+Dim.1 0.0561966497       89.2927087                    89.29271
+Dim.2 0.0063921101       10.1566344                    99.44934
+Dim.3 0.0002176350        0.3458075                    99.79515
+Dim.4 0.0001289226        0.2048494                   100.00000
+ > head(row$coord)
+        Dim 1        Dim 2        Dim 3        Dim 4
+1  0.38388439 -0.072288299  0.011042986 -0.001211228
+2 -0.08582417  0.035999745  0.001580949 -0.003707812
+3 -0.18307836 -0.020413978  0.013468292  0.013409202
+4 -0.21058465 -0.048007455 -0.011936633 -0.020529311
+5  0.04508144  0.005810922 -0.032533220  0.016295236
+6 -0.05300386  0.219492182  0.008832874 -0.002637600
+> # Cos2: quality on the factore map
+> head(row$cos2)
+       Dim 1       Dim 2        Dim 3        Dim 4
+1 0.96497417 0.034217699 0.0007985238 9.606532e-06
+2 0.84878702 0.149340744 0.0002880149 1.584217e-03
+3 0.97731687 0.012151130 0.0052891568 5.242848e-03
+4 0.93924221 0.048813679 0.0030177817 8.926330e-03
+5 0.59950072 0.009960569 0.3122110028 7.832771e-02
+6 0.05500965 0.943326468 0.0015276645 1.362203e-04
+> # Contributions to the principal components
+> head(row$contrib)
+       Dim 1       Dim 2      Dim 3      Dim 4
+1 36.1121409 11.25782573  7.7162626  0.1567060
+2  1.5013358  2.32232817  0.1315454  1.2214485
+3  7.6377537  0.83485893 10.6732898 17.8598900
+4 11.8317208  5.40602478  9.8161173 49.0144932
+5  0.4433321  0.06475745 59.6168802 25.2485335
+6  0.4648591 70.08267923  3.3334358  0.5017709
+
